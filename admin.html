@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Inoxa Gastronómico</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Estilo para el spinner de carga */
+        #loading-spinner {
+            display: none;
+            margin-left: 10px;
+        }
+        /* Estilo para la previsualización de imágenes */
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .image-preview img {
+            max-width: 150px;
+            border-radius: 5px;
+        }
+        .image-preview .preview-sticker {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 30px;
+            height: 30px;
+        }
+        /* Estilo para el buscador */
+        #search-input {
+            max-width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Panel de Administración - Inoxa Gastronómico</h2>
+
+        <!-- Alertas de Bootstrap -->
+        <div id="alert-container"></div>
+
+        <div class="row">
+            <!-- Formulario para agregar o editar producto -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-box-seam"></i> Agregar/Editar Producto
+                    </div>
+                    <div class="card-body">
+                        <form id="product-form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input type="text" id="name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripción <span class="text-danger">*</span></label>
+                                <textarea id="description" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría <span class="text-danger">*</span></label>
+                                <input type="text" id="category" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Imagen Principal <span class="text-danger">*</span></label>
+                                <input type="file" id="image" class="form-control" accept="image/*" required>
+                                <div class="image-preview" id="image-preview"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image2" class="form-label">Imagen Adicional 1 (Opcional)</label>
+                                <input type="file" id="image2" class="form-control" accept="image/*">
+                                <div class="image-preview" id="image2-preview"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image3" class="form-label">Imagen Adicional 2 (Opcional)</label>
+                                <input type="file" id="image3" class="form-control" accept="image/*">
+                                <div class="image-preview" id="image3-preview"></div>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Agregar Producto
+                            </button>
+                            <div id="loading-spinner" class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de productos -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-list-ul"></i> Lista de Productos</span>
+                        <input type="text" id="search-input" class="form-control" placeholder="Buscar productos...">
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Categoría</th>
+                                        <th>Imagen Principal</th>
+                                        <th>Imagen Adicional 1</th>
+                                        <th>Imagen Adicional 2</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-list">
+                                    <!-- Los productos se insertarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Personalizado -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmNDqGbRSpt_ZmSPjYpASccZ1ju-ZP8Zc",
+            authDomain: "inoxa-carpinteria-metalica.firebaseapp.com",
+            projectId: "inoxa-carpinteria-metalica",
+            storageBucket: "inoxa-carpinteria-metalica.appspot.com",
+            messagingSenderId: "594329253917",
+            appId: "1:594329253917:web:5ec7282f10ce4d65d5aef4",
+            measurementId: "G-HQX694H0JQ"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const productCollection = collection(db, "productos");
+
+        // Elementos del DOM
+        const productListElement = document.getElementById("product-list");
+        const form = document.getElementById("product-form");
+        const nameInput = document.getElementById("name");
+        const descriptionInput = document.getElementById("description");
+        const categoryInput = document.getElementById("category");
+        const imageInput = document.getElementById("image");
+        const image2Input = document.getElementById("image2");
+        const image3Input = document.getElementById("image3");
+        const submitButton = document.getElementById("submit-btn");
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const alertContainer = document.getElementById("alert-container");
+        const searchInput = document.getElementById("search-input");
+
+        // Previsualización de imágenes
+        const imagePreview = document.getElementById("image-preview");
+        const image2Preview = document.getElementById("image2-preview");
+        const image3Preview = document.getElementById("image3-preview");
+
+        // Variable global para rastrear el modo de edición
+        let currentEditId = null;
+
+        // URL del esticker (puede ser una imagen alojada en tu servidor o una URL externa)
+        const stickerURL = 'https://i.ibb.co/bsSQ7hH/image-removebg-preview-6.png'; // Reemplaza con la URL de tu esticker
+
+        /**
+         * Función para cargar una imagen desde una URL.
+         * @param {string} url - URL de la imagen.
+         * @returns {Promise<HTMLImageElement>} - Elemento de imagen cargado.
+         */
+        const loadImage = (url) => {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous'; // Para evitar problemas de CORS
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = url;
+            });
+        };
+
+        /**
+         * Función para procesar la imagen y agregar el esticker.
+         * @param {File} file - Archivo de imagen original.
+         * @returns {Promise<Blob>} - Blob de la imagen procesada.
+         */
+        const processImageWithSticker = async (file) => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const originalImage = await loadImage(URL.createObjectURL(file));
+                    const stickerImage = await loadImage(stickerURL);
+
+                    // Crear un canvas con el tamaño de la imagen original
+                    const canvas = document.createElement('canvas');
+                    canvas.width = originalImage.width;
+                    canvas.height = originalImage.height;
+                    const ctx = canvas.getContext('2d');
+
+                    // Dibujar la imagen original en el canvas
+                    ctx.drawImage(originalImage, 0, 0);
+
+                    // Definir el tamaño del esticker (por ejemplo, 10% del ancho de la imagen)
+                    const stickerWidth = originalImage.width * 0.1;
+                    const stickerHeight = (stickerImage.height / stickerImage.width) * stickerWidth;
+
+                    // Posicionar el esticker en la esquina inferior derecha con un margen
+                    const margin = 10; // en píxeles
+                    const x = originalImage.width - stickerWidth - margin;
+                    const y = originalImage.height - stickerHeight - margin;
+
+                    // Dibujar el esticker en el canvas
+                    ctx.drawImage(stickerImage, x, y, stickerWidth, stickerHeight);
+
+                    // Convertir el canvas a un Blob
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Error al procesar la imagen.'));
+                        }
+                    }, file.type, 1);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        };
+
+        /**
+         * Función para subir una imagen a imgBB y obtener su URL.
+         * Esta función procesa la imagen para agregar el esticker antes de subirla.
+         * @param {File} file - Archivo de imagen a subir.
+         * @returns {Promise<string>} - URL de la imagen subida.
+         */
+        const uploadImageToImgBB = async (file) => {
+            const apiKey = "17ecb33d7cf86647046260a9a2a7881e"; // Tu API key de imgBB
+            const formData = new FormData();
+
+            try {
+                // Procesar la imagen para agregar el esticker
+                const processedBlob = await processImageWithSticker(file);
+                // Convertir el Blob a File para poder subirlo
+                const processedFile = new File([processedBlob], file.name, { type: file.type });
+
+                formData.append("image", processedFile);
+
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    return result.data.url;
+                } else {
+                    throw new Error(result.error.message);
+                }
+            } catch (error) {
+                console.error("Error al subir la imagen a imgBB:", error);
+                mostrarAlerta('danger', 'Error al subir la imagen. Por favor, intenta de nuevo.');
+                throw error;
+            }
+        };
+
+        /**
+         * Función para mostrar alertas de Bootstrap
+         * @param {string} type - Tipo de alerta ('success', 'danger', etc.)
+         * @param {string} message - Mensaje a mostrar
+         */
+        const mostrarAlerta = (type, message) => {
+            const alerta = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            `;
+            alertContainer.innerHTML = alerta;
+            // Auto cerrar la alerta después de 3 segundos
+            setTimeout(() => {
+                const alertNode = bootstrap.Alert.getOrCreateInstance(alertContainer.querySelector('.alert'));
+                alertNode.close();
+            }, 3000);
+        };
+
+        /**
+         * Función para cargar productos
+         */
+        const fetchProducts = async () => {
+            try {
+                const querySnapshot = await getDocs(productCollection);
+                productListElement.innerHTML = "";
+                querySnapshot.forEach((doc) => {
+                    const productData = doc.data();
+                    const image2 = productData.imagen2 ? `<img src="${productData.imagen2}" alt="Imagen adicional 1" class="img-thumbnail" width="100">` : '-';
+                    const image3 = productData.imagen3 ? `<img src="${productData.imagen3}" alt="Imagen adicional 2" class="img-thumbnail" width="100">` : '-';
+
+                    const productCard = `
+                        <tr>
+                            <td>${productData.nombre}</td>
+                            <td>${productData.descripcion}</td>
+                            <td>${productData.categoria}</td>
+                            <td><img src="${productData.imagen}" alt="${productData.nombre}" class="img-thumbnail" width="100"></td>
+                            <td>${image2}</td>
+                            <td>${image3}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm edit-btn me-2" data-id="${doc.id}" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${doc.id}" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    productListElement.insertAdjacentHTML("beforeend", productCard);
+                });
+
+                // Añadir event listeners para botones de editar y eliminar
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const productId = e.target.closest('.edit-btn').getAttribute('data-id');
+                        await editProduct(productId);
+                    });
+                });
+
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = e.target.closest('.delete-btn').getAttribute('data-id');
+                        confirmDelete(productId);
+                    });
+                });
+            } catch (error) {
+                console.error("Error al obtener productos: ", error);
+                mostrarAlerta('danger', 'Error al cargar los productos.');
+            }
+        };
+
+        /**
+         * Función para agregar o actualizar producto
+         */
+        const saveProduct = async (e) => {
+            e.preventDefault();
+            try {
+                // Validar campos requeridos
+                if (!nameInput.value.trim() || !descriptionInput.value.trim() || !categoryInput.value.trim()) {
+                    mostrarAlerta('warning', 'Por favor, completa todos los campos requeridos.');
+                    return;
+                }
+
+                // Mostrar spinner de carga
+                loadingSpinner.style.display = "inline-block";
+                submitButton.disabled = true;
+
+                // Subir imágenes y obtener URLs
+                const imageFile = imageInput.files[0];
+                const image2File = image2Input.files[0];
+                const image3File = image3Input.files[0];
+
+                const productData = {
+                    nombre: nameInput.value.trim(),
+                    descripcion: descriptionInput.value.trim(),
+                    categoria: categoryInput.value.trim()
+                };
+
+                if (imageFile) {
+                    productData.imagen = await uploadImageToImgBB(imageFile);
+                } else if (!currentEditId) {
+                    mostrarAlerta('warning', 'La imagen principal es requerida.');
+                    throw new Error("Imagen principal no proporcionada.");
+                }
+
+                // Añadir campos opcionales si están llenos
+                if (image2File) {
+                    productData.imagen2 = await uploadImageToImgBB(image2File);
+                }
+
+                if (image3File) {
+                    productData.imagen3 = await uploadImageToImgBB(image3File);
+                }
+
+                if (currentEditId) {
+                    // Modo de actualización
+                    const productRef = doc(db, "productos", currentEditId);
+                    await updateDoc(productRef, productData);
+                    mostrarAlerta('success', 'Producto actualizado exitosamente.');
+                    currentEditId = null;
+                    submitButton.innerHTML = '<i class="bi bi-plus-circle"></i> Agregar Producto';
+                } else {
+                    // Modo de agregar nuevo producto
+                    await addDoc(productCollection, productData);
+                    mostrarAlerta('success', 'Producto agregado exitosamente.');
+                }
+
+                form.reset();
+                limpiarPrevisualizaciones();
+                fetchProducts(); // Recarga la lista de productos
+            } catch (error) {
+                console.error("Error al guardar producto: ", error);
+            } finally {
+                // Ocultar spinner de carga
+                loadingSpinner.style.display = "none";
+                submitButton.disabled = false;
+            }
+        };
+
+        /**
+         * Función para eliminar producto (con confirmación)
+         */
+        const confirmDelete = (productId) => {
+            if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+                deleteProduct(productId);
+            }
+        };
+
+        /**
+         * Función para eliminar producto
+         */
+        const deleteProduct = async (productId) => {
+            try {
+                const productRef = doc(db, "productos", productId);
+                await deleteDoc(productRef);
+                mostrarAlerta('success', 'Producto eliminado exitosamente.');
+                fetchProducts(); // Recarga la lista de productos
+            } catch (error) {
+                console.error("Error al eliminar producto: ", error);
+                mostrarAlerta('danger', 'Error al eliminar el producto.');
+            }
+        };
+
+        /**
+         * Función para editar producto
+         */
+        const editProduct = async (productId) => {
+            try {
+                const productRef = doc(db, "productos", productId);
+                const productDoc = await getDoc(productRef);
+                
+                if (productDoc.exists()) {
+                    const productData = productDoc.data();
+
+                    // Rellenar formulario con los datos actuales del producto
+                    nameInput.value = productData.nombre;
+                    descriptionInput.value = productData.descripcion;
+                    categoryInput.value = productData.categoria;
+                    // No pre-llenar los campos de archivo por razones de seguridad y usabilidad
+                    imageInput.value = "";
+                    image2Input.value = "";
+                    image3Input.value = "";
+                    limpiarPrevisualizaciones();
+
+                    // Cambiar el estado a modo de edición
+                    currentEditId = productId;
+                    submitButton.innerHTML = '<i class="bi bi-arrow-repeat"></i> Actualizar Producto';
+                } else {
+                    console.error("Producto no encontrado");
+                    mostrarAlerta('danger', 'Producto no encontrado.');
+                }
+            } catch (error) {
+                console.error("Error al obtener producto para editar: ", error);
+                mostrarAlerta('danger', 'Error al cargar el producto para editar.');
+            }
+        };
+
+        /**
+         * Función para filtrar productos según la búsqueda
+         */
+        const filtrarProductos = () => {
+            const filtro = searchInput.value.toLowerCase();
+            const filas = productListElement.getElementsByTagName('tr');
+
+            Array.from(filas).forEach(fila => {
+                const nombre = fila.cells[0].textContent.toLowerCase();
+                const descripcion = fila.cells[1].textContent.toLowerCase();
+                const categoria = fila.cells[2].textContent.toLowerCase();
+
+                if (nombre.includes(filtro) || descripcion.includes(filtro) || categoria.includes(filtro)) {
+                    fila.style.display = "";
+                } else {
+                    fila.style.display = "none";
+                }
+            });
+        };
+
+        /**
+         * Función para limpiar las previsualizaciones de imágenes
+         */
+        const limpiarPrevisualizaciones = () => {
+            imagePreview.innerHTML = "";
+            image2Preview.innerHTML = "";
+            image3Preview.innerHTML = "";
+        };
+
+        /**
+         * Función para previsualizar la imagen con el esticker antes de subirla
+         */
+        const previsualizarImagen = async (inputElement, previewElement) => {
+            const file = inputElement.files[0];
+            if (file) {
+                try {
+                    const processedBlob = await processImageWithSticker(file);
+                    const processedURL = URL.createObjectURL(processedBlob);
+                    previewElement.innerHTML = `
+                        <img src="${processedURL}" alt="Previsualización" class="img-thumbnail">
+                        <img src="${stickerURL}" alt="Esticker" class="preview-sticker">
+                    `;
+                } catch (error) {
+                    console.error("Error al previsualizar la imagen:", error);
+                    previewElement.innerHTML = '';
+                }
+            } else {
+                previewElement.innerHTML = '';
+            }
+        };
+
+        // Event Listeners para previsualizar imágenes
+        imageInput.addEventListener('change', () => previsualizarImagen(imageInput, imagePreview));
+        image2Input.addEventListener('change', () => previsualizarImagen(image2Input, image2Preview));
+        image3Input.addEventListener('change', () => previsualizarImagen(image3Input, image3Preview));
+
+        // Event Listener para el formulario
+        form.addEventListener("submit", saveProduct);
+
+        // Event Listener para el buscador
+        searchInput.addEventListener("input", filtrarProductos);
+
+        // Inicializar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchProducts();
+        });
+    </script>
+</body>
+</html>

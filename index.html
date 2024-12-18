@@ -1,150 +1,323 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inoxa Gastronómico</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* General Body and Elements */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #111;
-            color: #fff;
-            padding-top: 70px;
+        /* Variables */
+        :root {
+            --primary-color: #FF6B35;
+            --secondary-color: #ffffff;
+            --tertiary-color: #f8f9fa;
+            --light-color: #212529;
+            --dark-color: #f1f1f1;
+            --highlight-color: #f1f1f1;
+            --hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --font-primary: 'Roboto', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+            --transition-speed: 0.3s;
         }
+
+        /* General Styles */
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            padding-top: 70px;
+            scroll-behavior: smooth; /* Scroll suave */
+        }
+
         a {
             text-decoration: none;
-            color: #f39c12;
+            color: var(--primary-color);
+            transition: color var(--transition-speed);
         }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Navbar */
         .navbar {
-            background-color: #222;
+            background-color: var(--tertiary-color);
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-brand img {
-            height: 47px;
+            height: 50px;
+            transition: height var(--transition-speed);
         }
+
+        .navbar-brand img:hover {
+            height: 55px;
+        }
+
         .navbar-nav .nav-link {
-            color: #f39c12;
-            margin-right: 15px;
+            color: #212529;
+            margin-right: 20px;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+            font-family: var(--font-secondary);
         }
-        .navbar-nav .nav-link:hover {
-            color: #fff;
+
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 700;
         }
 
         /* Hero Section */
         .hero {
-            background: url('https://i.ibb.co/QFFZxrw/image.png') no-repeat center center/cover;
-            color: #f39c12;
+            background: url('https://i.ibb.co/t4cs8pr/image.png') no-repeat center center/cover;
+            color: var(--light-color);
             text-align: center;
-            padding: 100px 0;
-            border-radius: 10px;
+            padding: 80px 20px;
             position: relative;
-            animation: changeBackground 15s infinite alternate;
+            animation: changeBackground 30s infinite alternate;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Removed the overlay to show images normally */
+            /* background-blend-mode: overlay;
+            background-color: rgba(255, 255, 255, 0.7); */
+            border-radius: 0 0 10px 10px;
         }
+
         @keyframes changeBackground {
-            0% { background: url('https://i.ibb.co/QFFZxrw/image.png'); }
-            33% { background: url('https://i.ibb.co/NSJBX4G/image.png'); }
-            66% { background: url('https://i.ibb.co/t4cs8pr/image.png'); }
-        }
+            0% {
+                background-image: url('https://i.ibb.co/Qd8NVq3/image.png');
+            }
 
-        /* Efecto metálico en las letras */
-        .hero h1, .hero p {
-            background: linear-gradient(45deg, #dcdcdc, #b0b0b0, #a3a3a3, #6c6c6c);
-            -webkit-background-clip: text;
-            color: transparent;
-            font-weight: bold;
-            text-transform: uppercase;
-            animation: metallic-text 3s infinite alternate;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 255, 255, 0.3), 0 0 5px rgba(255, 255, 255, 0.3);
-        }
+            50% {
+                background-image: url('https://i.ibb.co/YphNL1f/image.png');
+            }
 
-        @keyframes metallic-text {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            100% {
+                background-image: url('https://i.ibb.co/t4cs8pr/image.png');
+            }
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: font-size var(--transition-speed);
+            font-weight: 600;
+            color: var(--light-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añadido para mejor legibilidad */
         }
+
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--light-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Añadido para mejor legibilidad */
         }
 
         /* Info Section */
+        .info-section,
+        .service-section {
+            margin: 60px 0;
+        }
+
         .info-section {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
-            gap: 20px;
-            margin: 40px 0;
+            gap: 30px;
         }
-        .info-card {
-            background-color: #444;
-            color: #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            width: 280px;
+
+        .info-card,
+        .service-card {
+            background-color: var(--secondary-color);
+            color: #212529;
+            border-radius: 15px;
+            padding: 25px;
+            width: 250px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
+            box-shadow: var(--hover-shadow);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
-        .info-card:hover { transform: scale(1.05); }
-        .info-card i { font-size: 3rem; color: #f39c12; margin-bottom: 15px; }
-        .info-card h5 { font-size: 1.3rem; font-weight: bold; color: #f39c12; margin-bottom: 10px; }
-        .info-card p { font-size: 1rem; color: #ddd; }
+
+        .info-card:hover,
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card i,
+        .service-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .info-card h5,
+        .service-card h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-family: var(--font-secondary);
+        }
+
+        .info-card p,
+        .service-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #212529;
+        }
 
         /* Product Section */
-        .product-section { margin-top: 100px; }
-        #search { max-width: 500px; margin: 0 auto 20px; }
-        .product-card {
-            background: #333;
-            border-radius: 10px;
-            color: #ddd;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
+        .product-section {
+            padding: 60px 0;
         }
-        .product-card:hover { transform: scale(1.05); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4); }
-        .product-card img { height: 200px; width: 100%; object-fit: cover; border-radius: 10px 10px 0 0; }
-        .card-body { text-align: center; padding: 20px; }
-        .card-body h5 { font-size: 1.3rem; color: #f39c12; }
-        .card-body p { font-size: 1.1rem; color: #ddd; }
+
+        /* Filtro de Productos */
+        .filter-container {
+            position: sticky;
+            top: 80px;
+            background-color: var(--tertiary-color);
+            padding: 20px;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-container h2 {
+            color: #212529;
+            margin-bottom: 15px;
+            font-family: var(--font-secondary);
+            font-size: 1.5rem;
+        }
+
+        .filter-btn {
+            margin: 5px;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            font-size: 0.9rem;
+            border: none;
+            color: #212529;
+            background-color: #e0e0e0;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: var(--highlight-color);
+            border-radius: 15px;
+            color: #212529;
+            box-shadow: var(--hover-shadow);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: none;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-speed);
+            loading: lazy;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--tertiary-color);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-height: 150px;
+            overflow: hidden;
+        }
+
+        .card-body h5 {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-family: var(--font-secondary);
+        }
+
+        .card-body p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Estilos para listas y negritas en descripciones */
+        .card-body p ul,
+        .card-body p ol {
+            padding-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-body p strong {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
 
         /* Service Section */
         .service-section {
-            margin-top: 100px;
-            padding: 50px 0;
-            background-color: #222;
+            background-color: var(--tertiary-color);
         }
-        .service-card {
-            background-color: #444;
-            border-radius: 10px;
-            color: #ddd;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        .service-card:hover { transform: scale(1.05); }
-        .service-card i { font-size: 3rem; color: #f39c12; margin-bottom: 15px; }
-        .service-card h5 { font-size: 1.5rem; font-weight: bold; color: #f39c12; margin-bottom: 15px; }
-        .service-card p { font-size: 1.1rem; color: #ddd; }
 
         /* Footer */
         .footer {
-            background: #222;
-            color: #ddd;
+            background: var(--tertiary-color);
+            color: #212529;
             text-align: center;
-            padding: 20px;
-            font-size: 0.9rem;
-            margin-top: 50px;
+            padding: 15px;
+            font-size: 0.85rem;
+            margin-top: 40px;
         }
 
         /* WhatsApp Button */
@@ -154,103 +327,474 @@
             right: 20px;
             background-color: #25d366;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+            transition: transform var(--transition-speed);
+            z-index: 1000;
         }
-        .whatsapp-button img { width: 40px; height: 40px; }
-        .whatsapp-button:hover { transform: scale(1.1); }
 
-        /* Filter Buttons */
-        .filter-btn { margin: 5px; border-radius: 30px; padding: 8px 20px; transition: background-color 0.3s; }
-        .filter-btn.active { background-color: #f39c12; color: #222; }
+        .whatsapp-button img {
+            width: 25px;
+            height: 25px;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Contact Section */
+        #contact p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #212529;
+        }
+
+        /* Modal */
+        .modal-content {
+            background-color: var(--highlight-color);
+            color: #212529;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--tertiary-color);
+        }
+
+        .modal-title {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            font-family: var(--font-secondary);
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: flex-start;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .modal-details {
+            width: 40%;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #modalProductName {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-family: var(--font-secondary);
+        }
+
+        #modalProductDescription {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        #modalProductDescription ul,
+        #modalProductDescription ol {
+            padding-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #modalProductDescription strong {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Search Input */
+        #search {
+            max-width: 350px;
+            margin: 0 auto 15px auto;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Carousels */
+        @media (max-width: 768px) {
+            /* Info Section Carousel */
+            .info-section {
+                display: none;
+            }
+
+            .info-carousel {
+                display: block;
+                margin: 40px 0;
+            }
+
+            .info-card {
+                width: 80%;
+            }
+
+            /* Services Section Carousel */
+            .service-section .row {
+                display: none;
+            }
+
+            .service-carousel {
+                display: block;
+                margin: 40px 0;
+            }
+
+            .service-card {
+                width: 80%;
+            }
+
+            /* Ajustes para el modal en pantallas pequeñas */
+            .modal-body {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-details {
+                width: 100%;
+                text-align: left;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .carousel-inner img {
+                height: 250px;
+                object-fit: cover;
+            }
+
+            .product-card img {
+                height: 160px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .filter-container {
+                top: 70px;
+            }
+
+            .filter-container h2 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            /* Info Section: Mostrar grid en escritorio */
+            .info-section {
+                display: flex;
+            }
+
+            .info-carousel {
+                display: none;
+            }
+
+            /* Service Section: Mostrar grid en escritorio */
+            .service-section .row {
+                display: flex;
+            }
+
+            .service-carousel {
+                display: none;
+            }
+        }
+
+        /* Botón Volver Arriba */
+        #backToTop {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            display: none;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color var(--transition-speed), transform var(--transition-speed);
+        }
+
+        #backToTop:hover {
+            background-color: #e55b2d;
+            transform: scale(1.1);
+        }
+
+        #backToTop i {
+            font-size: 1.5rem;
+        }
     </style>
 </head>
-<body>
+
+<body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="70" tabindex="0">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-dark navbar-expand-lg">
+    <nav class="navbar navbar-light navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="https://i.ibb.co/VM403X2/image.png" alt="Inoxa"></a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="#about">Sobre Nosotros</a>
-                <a class="nav-link" href="#products">Productos</a>
-                <a class="nav-link" href="#services">Servicios</a>
-                <a class="nav-link" href="#contact">Contacto</a>
+            <a class="navbar-brand" href="#hero"><img src="https://i.ibb.co/f0j3JTK/image-removebg-preview-4.png" alt="Inoxa" loading="lazy"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">Sobre Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="hero" class="hero">
         <h1>Bienvenidos a Inoxa Gastronómico</h1>
         <p>Productos de acero inoxidable de alta calidad para tu negocio.</p>
     </section>
 
     <!-- Sección Sobre Nosotros -->
     <section id="about" class="container text-center mt-5">
-        <h2 class="text-light">Sobre Nosotros</h2>
-        <p>En Inoxa Gastronómico nos especializamos en la fabricación y distribución de productos de acero inoxidable, diseñados para satisfacer las necesidades de los sectores gastronómico, industrial y comercial. Nuestro compromiso es ofrecer soluciones duraderas, seguras y de alta calidad, optimizando espacios y mejorando la eficiencia operativa de nuestros clientes.</p>
+        <h2 class="text-dark">Sobre Nosotros</h2>
+        <p>En Inoxa Gastronómico nos especializamos en la fabricación y distribución de productos de acero inoxidable de
+            alta calidad, diseñados para satisfacer las necesidades de tu negocio. Nuestro compromiso es brindar soluciones
+            duraderas y eficientes para el sector gastronómico.</p>
     </section>
 
-    <!-- Información adicional en tarjetas -->
-    <section class="info-section">
-        <div class="info-card"><i class="fas fa-industry"></i><h5>Proyectos a gran escala</h5><p>Desarrollamos proyectos para organizaciones públicas o privadas en áreas como alimentos, lavandería y calentamiento de agua.</p></div>
-        <div class="info-card"><i class="fas fa-cogs"></i><h5>Calculo, Diseño y Mantenimiento</h5><p>Ofrecemos diseño, equipamiento y mantenimiento de sistemas industriales con acero inoxidable.</p></div>
-        <div class="info-card"><i class="fas fa-concierge-bell"></i><h5>Equipos para Cocinas Profesionales</h5><p>Soluciones duraderas y personalizadas para optimizar tu espacio gastronómico.</p></div>
-        <div class="info-card"><i class="fas fa-utensils"></i><h5>Servicios para Diversos Sectores</h5><p>Implementamos proyectos para sectores Horeca, institucional e industrial.</p></div>
+    <!-- Información adicional en tarjetas - Grid para pantallas grandes -->
+    <section class="info-section d-none d-md-flex">
+        <div class="info-card">
+            <i class="fas fa-industry"></i>
+            <h5>Proyectos a Gran Escala</h5>
+            <p>Desarrollamos proyectos de gran envergadura adaptados a las necesidades de tu negocio, garantizando calidad y eficiencia.</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-cogs"></i>
+            <h5>Cálculo, Diseño y Mantenimiento</h5>
+            <p>Ofrecemos servicios integrales de cálculo, diseño personalizado y mantenimiento para asegurar el óptimo funcionamiento de tus equipos.</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-concierge-bell"></i>
+            <h5>Equipos para Cocinas Profesionales</h5>
+            <p>Soluciones duraderas y eficientes para cocinas profesionales, garantizando un rendimiento superior en tu negocio gastronómico.</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-utensils"></i>
+            <h5>Servicios para Diversos Sectores</h5>
+            <p>Implementamos proyectos en diversos sectores, adaptándonos a las especificaciones y requerimientos de cada industria.</p>
+        </div>
+    </section>
+
+    <!-- Información adicional en tarjetas - Carrusel para pantallas pequeñas -->
+    <section class="info-carousel d-md-none">
+        <div id="infoCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores del Carrusel -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#infoCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="info-card mx-auto">
+                        <i class="fas fa-industry"></i>
+                        <h5>Proyectos a Gran Escala</h5>
+                        <p>Desarrollamos proyectos de gran envergadura adaptados a las necesidades de tu negocio, garantizando calidad y eficiencia.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="info-card mx-auto">
+                        <i class="fas fa-cogs"></i>
+                        <h5>Cálculo, Diseño y Mantenimiento</h5>
+                        <p>Ofrecemos servicios integrales de cálculo, diseño personalizado y mantenimiento para asegurar el óptimo funcionamiento de tus equipos.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="info-card mx-auto">
+                        <i class="fas fa-concierge-bell"></i>
+                        <h5>Equipos para Cocinas Profesionales</h5>
+                        <p>Soluciones duraderas y eficientes para cocinas profesionales, garantizando un rendimiento superior en tu negocio gastronómico.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="info-card mx-auto">
+                        <i class="fas fa-utensils"></i>
+                        <h5>Servicios para Diversos Sectores</h5>
+                        <p>Implementamos proyectos en diversos sectores, adaptándonos a las especificaciones y requerimientos de cada industria.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Controles del Carrusel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#infoCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#infoCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
     </section>
 
     <!-- Sección de Productos -->
     <section id="products" class="product-section">
-        <div class="container text-center">
-            <h2 class="text-light">Nuestros Productos</h2>
-            <input type="text" id="search" class="form-control mb-3" placeholder="Buscar productos...">
+        <div class="container text-center mb-4">
+            <h2 class="text-dark">Nuestros Productos</h2>
+        </div>
+        <div class="container text-center filter-container">
+            <input type="text" id="search" class="form-control mb-3" placeholder="Buscar productos..." aria-label="Buscar productos">
             <div>
-                <button class="btn btn-warning filter-btn active" data-category="all">Todos</button>
-                <button class="btn btn-secondary filter-btn" data-category="cocinas">Cocinas</button>
-                <button class="btn btn-secondary filter-btn" data-category="lavaderos">Lavaderos</button>
-                <button class="btn btn-secondary filter-btn" data-category="refrigeracion">Refrigeración</button>
+                <button class="btn filter-btn active" data-category="all">Todos</button>
+                <button class="btn filter-btn" data-category="cocinas">Cocinas</button>
+                <button class="btn filter-btn" data-category="lavaderos">Lavaderos</button>
+                <button class="btn filter-btn" data-category="refrigeracion">Refrigeración</button>
             </div>
         </div>
 
         <div class="container mt-4">
             <div class="row" id="product-list">
-                <div class="col-md-4 mb-4 product-card" data-category="cocinas">
-                    <div class="card"><img src="https://via.placeholder.com/300" class="card-img-top" alt="Cocina Industrial"><div class="card-body"><h5 class="card-title">Cocina Industrial</h5><p class="card-text">PEN 5,000</p></div></div>
+                <!-- Los productos de Firebase se insertarán aquí -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para detalles del producto -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Detalles del Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="col-md-4 mb-4 product-card" data-category="lavaderos">
-                    <div class="card"><img src="https://via.placeholder.com/300" class="card-img-top" alt="Lavadero"><div class="card-body"><h5 class="card-title">Lavadero de 2 Pozas</h5><p class="card-text">PEN 2,800</p></div></div>
+                <div class="modal-body">
+                    <!-- Carrusel de Imágenes -->
+                    <div id="carouselImages" class="carousel slide mb-3" data-bs-ride="carousel" style="width: 60%;">
+                        <div class="carousel-inner" id="carousel-inner">
+                            <!-- Las imágenes se insertarán aquí dinámicamente -->
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+
+                    <!-- Detalles del Producto -->
+                    <div class="modal-details">
+                        <h5 id="modalProductName"></h5>
+                        <div id="modalProductDescription"></div>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-4 product-card" data-category="refrigeracion">
-                    <div class="card"><img src="https://via.placeholder.com/300" class="card-img-top" alt="Refrigerador"><div class="card-body"><h5 class="card-title">Equipo de Refrigeración</h5><p class="card-text">PEN 9,500</p></div></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Servicios - Grid para pantallas grandes -->
+    <section id="services" class="service-section d-none d-md-block">
+        <div class="container text-center">
+            <h2 class="text-dark">Nuestros Servicios</h2>
+            <div class="row mt-4">
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <i class="fas fa-tools"></i>
+                        <h5>Instalación Profesional</h5>
+                        <p>Instalamos equipos con precisión y profesionalismo, asegurando un funcionamiento óptimo desde el primer día.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <i class="fas fa-wrench"></i>
+                        <h5>Mantenimiento y Reparación</h5>
+                        <p>Ofrecemos servicios de mantenimiento preventivo y correctivo para prolongar la vida útil de tus equipos.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="service-card">
+                        <i class="fas fa-paint-roller"></i>
+                        <h5>Personalización de Productos</h5>
+                        <p>Personalizamos equipos según tus necesidades específicas, garantizando que se adapten perfectamente a tu espacio y requerimientos.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Servicios -->
-    <section id="services" class="service-section">
-        <div class="container text-center">
-            <h2 class="text-light">Nuestros Servicios</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4"><div class="service-card"><i class="fas fa-cogs"></i><h5>Instalación Profesional</h5><p>Instalamos equipos industriales y gastronómicos con asesoramiento y calidad garantizada.</p></div></div>
-                <div class="col-md-4 mb-4"><div class="service-card"><i class="fas fa-tools"></i><h5>Mantenimiento y Reparación</h5><p>Ofrecemos servicios de mantenimiento preventivo y correctivo para equipos industriales.</p></div></div>
-                <div class="col-md-4 mb-4"><div class="service-card"><i class="fas fa-paint-roller"></i><h5>Personalización de Productos</h5><p>Personalizamos equipos y productos según las necesidades específicas de tu negocio.</p></div></div>
+    <!-- Sección de Servicios - Carrusel para pantallas pequeñas -->
+    <section class="service-carousel d-md-none">
+        <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores del Carrusel -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#serviceCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="service-card mx-auto">
+                        <i class="fas fa-tools"></i>
+                        <h5>Instalación Profesional</h5>
+                        <p>Instalamos equipos con precisión y profesionalismo, asegurando un funcionamiento óptimo desde el primer día.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="service-card mx-auto">
+                        <i class="fas fa-wrench"></i>
+                        <h5>Mantenimiento y Reparación</h5>
+                        <p>Ofrecemos servicios de mantenimiento preventivo y correctivo para prolongar la vida útil de tus equipos.</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="service-card mx-auto">
+                        <i class="fas fa-paint-roller"></i>
+                        <h5>Personalización de Productos</h5>
+                        <p>Personalizamos equipos según tus necesidades específicas, garantizando que se adapten perfectamente a tu espacio y requerimientos.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Controles del Carrusel -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#serviceCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#serviceCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
         </div>
     </section>
 
     <!-- Información de contacto (correo y Facebook) -->
     <section id="contact" class="container text-center mt-5">
-        <h2 class="text-light">Contacto</h2>
+        <h2 class="text-dark">Contacto</h2>
         <p>Para consultas y más información, no dudes en contactarnos:</p>
-        <p><i class="fas fa-envelope"></i> Correo: <a href="mailto:tu-correo@example.com">tu-correo@example.com</a></p>
-        <p><i class="fab fa-facebook"></i> Síguenos en <a href="https://www.facebook.com/tu-perfil" target="_blank">Facebook</a></p>
+        <p><i class="fas fa-envelope"></i> Correo: <a href="mailto:ventas@inoxagastronomico.pe">ventas@inoxagastronomico.pe</a></p>
+        <p><i class="fab fa-facebook"></i> Síguenos en <a href="https://www.facebook.com/share/18DxLCLt8y/?mibextid=qi2Omg" target="_blank" rel="noopener noreferrer">Inoxa</a></p>
     </section>
 
     <!-- Footer -->
@@ -259,30 +803,308 @@
     </footer>
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/51917856577" target="_blank" class="whatsapp-button">
+    <a href="https://wa.me/51917856577" target="_blank" class="whatsapp-button" aria-label="WhatsApp">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     </a>
 
+    <!-- Botón Volver Arriba -->
+    <button id="backToTop" aria-label="Volver Arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Filtrar productos por categoría
-            $(".filter-btn").click(function() {
-                const category = $(this).data("category");
-                $(".product-card").toggle(category === "all" || $(this).data("category") === category);
-                $(".filter-btn").removeClass("active");
-                $(this).addClass("active");
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmNDqGbRSpt_ZmSPjYpASccZ1ju-ZP8Zc",
+            authDomain: "inoxa-carpinteria-metalica.firebaseapp.com",
+            projectId: "inoxa-carpinteria-metalica",
+            storageBucket: "inoxa-carpinteria-metalica.appspot.com",
+            messagingSenderId: "594329253917",
+            appId: "1:594329253917:web:5ec7282f10ce4d65d5aef4",
+            measurementId: "G-HQX694H0JQ"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Referencias al DOM
+        const productListElement = document.getElementById("product-list");
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const searchInput = document.getElementById("search");
+        const productModal = document.getElementById("productModal");
+        const modalProductName = document.getElementById("modalProductName");
+        const modalProductDescription = document.getElementById("modalProductDescription");
+        const carouselInner = document.getElementById("carousel-inner");
+        const backToTopButton = document.getElementById("backToTop");
+
+        // Colección de productos
+        const productCollection = collection(db, "productos");
+
+        /**
+         * Función para procesar la descripción del producto.
+         * Convierte líneas que comienzan con ". " en elementos de lista y
+         * convierte texto entre "**" en negritas.
+         * @param {string} text - Texto de la descripción.
+         * @returns {string} - HTML formateado de la descripción.
+         */
+        const parseDescription = (text) => {
+            let html = '';
+            const lines = text.split('\n');
+            let inList = false;
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('. ')) {
+                    if (!inList) {
+                        html += '<ul>';
+                        inList = true;
+                    }
+                    let item = line.substring(2).trim();
+                    // Convertir **texto** a <strong>texto</strong>
+                    item = item.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    html += `<li>${item}</li>`;
+                } else {
+                    if (inList) {
+                        html += '</ul>';
+                        inList = false;
+                    }
+                    if (line !== '') {
+                        // Convertir **texto** a <strong>texto</strong>
+                        const formattedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        html += `<p>${formattedLine}</p>`;
+                    }
+                }
             });
 
-            // Búsqueda en tiempo real
-            $("#search").on("keyup", function() {
-                const searchValue = $(this).val().toLowerCase();
-                $(".product-card").each(function() {
-                    $(this).toggle($(this).text().toLowerCase().includes(searchValue));
+            if (inList) {
+                html += '</ul>';
+            }
+
+            return html;
+        };
+
+        /**
+         * Función para crear una tarjeta de producto en el DOM
+         */
+        const createProductCard = (productData, docId) => {
+            // Crear fragmento para mejorar performance
+            const fragment = document.createDocumentFragment();
+            const colDiv = document.createElement("div");
+            colDiv.className = "col-md-4 mb-4";
+
+            const cardDiv = document.createElement("div");
+            cardDiv.className = "product-card";
+            cardDiv.setAttribute("data-category", productData.categoria.toLowerCase());
+            cardDiv.setAttribute("data-product-id", docId);
+            cardDiv.setAttribute("data-images", JSON.stringify([productData.imagen, productData.imagen2, productData.imagen3].filter(img => img)));
+            cardDiv.setAttribute("data-name", productData.nombre);
+            cardDiv.setAttribute("data-description", productData.descripcion);
+
+            const img = document.createElement("img");
+            img.src = productData.imagen;
+            img.className = "card-img-top";
+            img.alt = productData.nombre;
+            img.loading = "lazy";
+
+            const cardBody = document.createElement("div");
+            cardBody.className = "card-body";
+
+            const title = document.createElement("h5");
+            title.className = "card-title";
+            title.textContent = productData.nombre;
+
+            const description = document.createElement("div");
+            description.className = "card-text";
+            description.innerHTML = parseDescription(productData.descripcion);
+
+            // Agregar elementos al DOM
+            cardBody.appendChild(title);
+            cardBody.appendChild(description);
+            cardDiv.appendChild(img);
+            cardDiv.appendChild(cardBody);
+            colDiv.appendChild(cardDiv);
+            fragment.appendChild(colDiv);
+
+            return fragment;
+        };
+
+        /**
+         * Función para cargar productos
+         */
+        const fetchProducts = async () => {
+            try {
+                const querySnapshot = await getDocs(productCollection);
+                const fragment = document.createDocumentFragment();
+
+                querySnapshot.forEach((doc) => {
+                    const productData = doc.data();
+                    const productCard = createProductCard(productData, doc.id);
+                    fragment.appendChild(productCard);
                 });
+
+                productListElement.innerHTML = ""; // Limpiar productos existentes
+                productListElement.appendChild(fragment);
+            } catch (error) {
+                console.error("Error al obtener productos:", error);
+                productListElement.innerHTML = `<p class="text-danger">Error al cargar productos. Por favor, intenta nuevamente más tarde.</p>`;
+            }
+        };
+
+        /**
+         * Filtrado por categoría
+         */
+        const filterProducts = (category) => {
+            document.querySelectorAll(".product-card").forEach(card => {
+                const cardCategory = card.getAttribute("data-category");
+                card.parentElement.style.display = (category === "all" || cardCategory === category) ? "block" : "none";
+            });
+        };
+
+        /**
+         * Búsqueda de productos
+         */
+        const searchProducts = (query) => {
+            document.querySelectorAll(".product-card").forEach(card => {
+                const name = card.getAttribute("data-name").toLowerCase();
+                const description = card.getAttribute("data-description").toLowerCase();
+                const match = name.includes(query) || description.includes(query);
+                card.parentElement.style.display = match ? "block" : "none";
+            });
+        };
+
+        /**
+         * Manejar eventos de filtrado
+         */
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // Remover clase active de todos los botones
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+                // Agregar clase active al botón clickeado
+                button.classList.add("active");
+                // Filtrar productos
+                const category = button.getAttribute("data-category");
+                filterProducts(category);
             });
         });
+
+        /**
+         * Manejar evento de búsqueda con debounce
+         */
+        let debounceTimeout;
+        searchInput.addEventListener("input", () => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                const query = searchInput.value.trim().toLowerCase();
+                searchProducts(query);
+            }, 300);
+        });
+
+        /**
+         * Manejar clic en productos para mostrar modal
+         */
+        productListElement.addEventListener("click", async (event) => {
+            const productCard = event.target.closest(".product-card");
+            if (!productCard) return;
+
+            const productId = productCard.getAttribute("data-product-id");
+            try {
+                const productRef = doc(db, "productos", productId);
+                const productSnap = await getDoc(productRef);
+                if (!productSnap.exists()) {
+                    console.error("Producto no encontrado");
+                    return;
+                }
+                const productData = productSnap.data();
+
+                // Asignar nombre y descripción
+                modalProductName.textContent = productData.nombre;
+                modalProductDescription.innerHTML = parseDescription(productData.descripcion);
+
+                // Preparar imágenes para el carrusel
+                const images = [productData.imagen];
+                if (productData.imagen2) images.push(productData.imagen2);
+                if (productData.imagen3) images.push(productData.imagen3);
+
+                // Limpiar carrusel existente
+                carouselInner.innerHTML = "";
+
+                images.forEach((imgSrc, index) => {
+                    const carouselItem = document.createElement("div");
+                    carouselItem.className = `carousel-item ${index === 0 ? "active" : ""}`;
+
+                    const img = document.createElement("img");
+                    img.src = imgSrc;
+                    img.className = "d-block w-100";
+                    img.alt = `Imagen ${index + 1} de ${productData.nombre}`;
+                    img.loading = "lazy";
+
+                    carouselItem.appendChild(img);
+                    carouselInner.appendChild(carouselItem);
+                });
+
+                // Mostrar u ocultar controles del carrusel
+                const carouselControls = productModal.querySelectorAll(".carousel-control-prev, .carousel-control-next");
+                if (images.length > 1) {
+                    carouselControls.forEach(control => control.style.display = "flex");
+                } else {
+                    carouselControls.forEach(control => control.style.display = "none");
+                }
+
+                // Reiniciar el carrusel
+                const carouselElement = new bootstrap.Carousel(document.getElementById('carouselImages'), {
+                    interval: 2000,
+                    ride: 'carousel',
+                    pause: 'hover'
+                });
+
+                // Mostrar el modal
+                const modal = new bootstrap.Modal(productModal);
+                modal.show();
+
+            } catch (error) {
+                console.error("Error al obtener detalles del producto:", error);
+            }
+        });
+
+        /**
+         * Cargar productos al cargar la página
+         */
+        document.addEventListener("DOMContentLoaded", fetchProducts);
+
+        /**
+         * Funcionalidad para el botón "Volver Arriba"
+         */
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = "flex";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        });
+
+        backToTopButton.addEventListener("click", () => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+        /**
+         * Inicializar ScrollSpy de Bootstrap
+         */
+        const scrollSpy = new bootstrap.ScrollSpy(document.body, {
+            target: '#navbarNav',
+            offset: 100
+        });
     </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
